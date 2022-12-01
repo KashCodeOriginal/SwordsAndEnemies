@@ -1,5 +1,10 @@
 using System;
+using UI.LoadingScreen;
+using Services.SceneLoader;
 using System.Collections.Generic;
+using Infrastructure.Factory.EnvironmentFactory;
+using Infrastructure.Factory.PlayerFactory;
+using Services.ServiceLocator;
 
 namespace Infrastructure.StateMachine
 {
@@ -9,12 +14,13 @@ namespace Infrastructure.StateMachine
 
         private IBaseState _currentState;
 
-        public GameStateMachine(SceneLoader sceneLoader)
+        public GameStateMachine(SceneLoader sceneLoader, LoadingScreen loadingScreen, AllServices services)
         {
             _states = new Dictionary<Type, IBaseState>()
             {
-                [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
-                [typeof(LevelLoadingState)] = new LevelLoadingState(this, sceneLoader)
+                [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
+                [typeof(LevelLoadingState)] = new LevelLoadingState(this, sceneLoader, loadingScreen, services.Single<IPlayerFactory>(), services.Single<IEnvironmentFactory>()),
+                [typeof(GamePlayState)] = new GamePlayState(this)
             }; 
         }
         
@@ -46,6 +52,24 @@ namespace Infrastructure.StateMachine
         private TState GetNewState<TState>() where TState : class, IBaseState
         {
             return _states[typeof(TState)] as TState;
+        }
+    }
+
+    public class GamePlayState : IState
+    {
+        private readonly GameStateMachine _gameStateMachine;
+
+        public GamePlayState(GameStateMachine gameStateMachine)
+        {
+            _gameStateMachine = gameStateMachine;
+        }
+
+        public void Enter()
+        {
+        }
+
+        public void Exit()
+        {
         }
     }
 }

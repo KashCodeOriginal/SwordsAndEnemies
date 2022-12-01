@@ -1,4 +1,9 @@
-﻿using Services.Input;
+﻿using Infrastructure.Factory.EnvironmentFactory;
+using Infrastructure.Factory.PlayerFactory;
+using Services.AssetsProvider;
+using Services.Input;
+using Services.SceneLoader;
+using Services.ServiceLocator;
 using UnityEngine;
 
 namespace Infrastructure.StateMachine
@@ -7,19 +12,21 @@ namespace Infrastructure.StateMachine
     {
         private const string SceneName = "Bootstrap";
 
-        public BootstrapState(GameStateMachine gameStateMachine, SceneLoader sceneLoader)
+        public BootstrapState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, AllServices services)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
+            _services = services;
+            
+            RegisterServices();
         }
 
         private readonly GameStateMachine _gameStateMachine;
         private readonly SceneLoader _sceneLoader;
+        private readonly AllServices _services;
 
         public void Enter()
         {
-            RegisterServices();
-            
             _sceneLoader.LoadScene(SceneName, EnterLoadLevel);
         }
 
@@ -35,10 +42,13 @@ namespace Infrastructure.StateMachine
 
         private void RegisterServices()
         {
-            Game.InputService = RegisterInputService();
+            _services.RegisterSingle<IInputService>(InputService());
+            _services.RegisterSingle<IAssetsProvider>(new AssetsProvider());
+            _services.RegisterSingle<IPlayerFactory>(new PlayerFactory(_services.Single<IAssetsProvider>())); 
+            _services.RegisterSingle<IEnvironmentFactory>(new EnvironmentFactory(_services.Single<IAssetsProvider>())); 
         }
         
-        private IInputService RegisterInputService()
+        private IInputService InputService()
         {
             if (Application.isEditor)
             {

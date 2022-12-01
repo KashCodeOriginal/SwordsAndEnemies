@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
-using UnityEngine;
+using Services.CoroutineRunner;
 using UnityEngine.SceneManagement;
 
-namespace Infrastructure
+namespace Services.SceneLoader
 {
     public class SceneLoader
     {

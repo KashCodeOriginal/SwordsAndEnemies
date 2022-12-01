@@ -1,6 +1,7 @@
 using UnityEngine;
 using Infrastructure;
 using Services.Input;
+using Services.ServiceLocator;
 
 namespace Hero
 {
@@ -13,14 +14,7 @@ namespace Hero
 
         private void Awake()
         {
-            _inputService = Game.InputService;
-        }
-
-        private void Start()
-        {
-            _camera = Camera.main;
-
-            CameraFollow();
+            _inputService = AllServices.Container.Single<IInputService>();
         }
 
         private void Update()
@@ -41,12 +35,9 @@ namespace Hero
             _characterController.Move(movementVector * (Time.deltaTime * _speed));
         }
 
-        private void CameraFollow()
+        public void SetUp(Camera cam)
         {
-            if (_camera.TryGetComponent(out CameraFollow cameraFollow))
-            {
-                cameraFollow.SetFollowingTarget(gameObject);
-            }
+            _camera = cam;
         }
     }
 }
