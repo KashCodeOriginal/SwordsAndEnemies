@@ -1,7 +1,6 @@
 ﻿using Hero;
 using UnityEngine;
 using CameraControl;
-using Data;
 using Data.Assets;
 using UI.LoadingScreen;
 using Services.SceneLoader;
@@ -31,7 +30,7 @@ namespace Infrastructure.StateMachine
         public void Enter(string sceneName)
         {
             _loadingScreen.Show();
-            
+
             _sceneLoader.LoadScene(sceneName, OnSceneLoaded); 
         }
 

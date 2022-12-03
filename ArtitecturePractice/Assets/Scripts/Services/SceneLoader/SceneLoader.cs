@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Services.CoroutineRunner;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Services.SceneLoader

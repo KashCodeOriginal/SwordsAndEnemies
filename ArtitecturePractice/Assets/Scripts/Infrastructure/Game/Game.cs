@@ -1,11 +1,10 @@
-﻿using Services.Input;
-using UI.LoadingScreen;
-using Services.SceneLoader;
+﻿using Infrastructure.StateMachine;
 using Services.CoroutineRunner;
-using Infrastructure.StateMachine;
+using Services.SceneLoader;
 using Services.ServiceLocator;
+using UI.LoadingScreen;
 
-namespace Infrastructure
+namespace Infrastructure.Game
 {
     public class Game
     {

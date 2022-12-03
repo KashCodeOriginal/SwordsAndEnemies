@@ -4,6 +4,8 @@ using Services.SceneLoader;
 using System.Collections.Generic;
 using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
+using Services.PersistentProgress;
+using Services.SaveLoadService;
 using Services.ServiceLocator;
 
 namespace Infrastructure.StateMachine
@@ -18,9 +20,10 @@ namespace Infrastructure.StateMachine
         {
             _states = new Dictionary<Type, IBaseState>()
             {
+                [typeof(GamePlayState)] = new GamePlayState(this),
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
-                [typeof(LevelLoadingState)] = new LevelLoadingState(this, sceneLoader, loadingScreen, services.Single<IPlayerFactory>(), services.Single<IEnvironmentFactory>()),
-                [typeof(GamePlayState)] = new GamePlayState(this)
+                [typeof(ProgressLoadingState)] = new ProgressLoadingState(this, services.Single<IPersistentProgressService>(), services.Single<ISaveLoadService>()),
+                [typeof(LevelLoadingState)] = new LevelLoadingState(this, sceneLoader, loadingScreen, services.Single<IPlayerFactory>(), services.Single<IEnvironmentFactory>())
             }; 
         }
         
@@ -52,24 +55,6 @@ namespace Infrastructure.StateMachine
         private TState GetNewState<TState>() where TState : class, IBaseState
         {
             return _states[typeof(TState)] as TState;
-        }
-    }
-
-    public class GamePlayState : IState
-    {
-        private readonly GameStateMachine _gameStateMachine;
-
-        public GamePlayState(GameStateMachine gameStateMachine)
-        {
-            _gameStateMachine = gameStateMachine;
-        }
-
-        public void Enter()
-        {
-        }
-
-        public void Exit()
-        {
         }
     }
 }

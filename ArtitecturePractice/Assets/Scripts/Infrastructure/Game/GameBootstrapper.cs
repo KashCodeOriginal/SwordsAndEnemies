@@ -9,11 +9,11 @@ namespace Infrastructure
     {
         [SerializeField] private LoadingScreen _loadingScreen;
          
-        private Game _gameInstance;
+        private Game.Game _gameInstance;
 
         private void Awake()
         {
-            _gameInstance = new Game(this, _loadingScreen);
+            _gameInstance = new Game.Game(this, _loadingScreen);
             
             _gameInstance.StateMachine.SwitchState<BootstrapState>();
             
