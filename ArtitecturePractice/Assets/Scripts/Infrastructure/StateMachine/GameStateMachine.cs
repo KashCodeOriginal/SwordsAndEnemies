@@ -2,6 +2,7 @@ using System;
 using UI.LoadingScreen;
 using Services.SceneLoader;
 using System.Collections.Generic;
+using Infrastructure.Factory.EnemyFactory;
 using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
 using Services;
@@ -31,7 +32,8 @@ namespace Infrastructure.StateMachine
                     services.Single<IPlayerFactory>(),
                     services.Single<IEnvironmentFactory>(),
                     services.Single<ISaveLoadInstancesWatcher>(),
-                    services.Single<IPersistentProgressService>())
+                    services.Single<IPersistentProgressService>(),
+                    services.Single<IEnemyFactory>())
             }; 
         }
         

@@ -1,4 +1,5 @@
-﻿using Infrastructure.Factory.EnvironmentFactory;
+﻿using Infrastructure.Factory.EnemyFactory;
+using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
 using Services;
 using Services.AssetsProvider;
@@ -58,6 +59,8 @@ namespace Infrastructure.StateMachine
                 GetAsset<ISaveLoadInstancesWatcher>()));
             _services.RegisterSingle<IEnvironmentFactory>
                 (new EnvironmentFactory(GetAsset<IAssetsProvider>()));
+            _services.RegisterSingle<IEnemyFactory>
+                (new EnemyFactory(GetAsset<IAssetsProvider>()));
         }
 
         private T GetAsset<T>() where T : IService

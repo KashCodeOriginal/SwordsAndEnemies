@@ -2,6 +2,8 @@
 using UnityEngine;
 using CameraControl;
 using Data.Assets;
+using Enemy.Logic;
+using Infrastructure.Factory.EnemyFactory;
 using UI.LoadingScreen;
 using Services.SceneLoader;
 using Infrastructure.Factory.PlayerFactory;
@@ -14,7 +16,9 @@ namespace Infrastructure.StateMachine
     public class LevelLoadingState : IStateWithOneArg<string>
     {
         public LevelLoadingState(GameStateMachine gameStateMachine, SceneLoader sceneLoader,
-            LoadingScreen loadingScreen, IPlayerFactory playerFactory, IEnvironmentFactory environmentFactory, ISaveLoadInstancesWatcher saveLoadInstancesWatcher, IPersistentProgressService persistentProgressService)
+            LoadingScreen loadingScreen, IPlayerFactory playerFactory, IEnvironmentFactory environmentFactory,
+            ISaveLoadInstancesWatcher saveLoadInstancesWatcher, IPersistentProgressService persistentProgressService,
+            IEnemyFactory enemyFactory)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
@@ -23,6 +27,7 @@ namespace Infrastructure.StateMachine
             _environmentFactory = environmentFactory;
             _saveLoadInstancesWatcher = saveLoadInstancesWatcher;
             _persistentProgressService = persistentProgressService;
+            _enemyFactory = enemyFactory;
         }
 
         private readonly GameStateMachine _gameStateMachine;
@@ -37,6 +42,7 @@ namespace Infrastructure.StateMachine
 
         private readonly ISaveLoadInstancesWatcher _saveLoadInstancesWatcher;
         private readonly IPersistentProgressService _persistentProgressService;
+        private readonly IEnemyFactory _enemyFactory;
 
         public void Enter(string sceneName)
         {
@@ -74,16 +80,23 @@ namespace Infrastructure.StateMachine
             var gameplayScreen = _environmentFactory.CreateInstance(AssetsConstants.GAMEPLAY_SCREEN_PREFAB_PATH);
             var camera = _environmentFactory.CreateInstance(AssetsConstants.CAMERA_PREFAB_PATH);
 
+            var enemy = _enemyFactory.CreateInstance(AssetsConstants.ENEMY_PREFAB_PATH);
+
             CameraFollow(camera, hero);
-            SetUp(hero, camera);
+            SetUp(hero, camera, enemy);
         }
 
 
-        private void SetUp(GameObject hero, GameObject cam)
+        private void SetUp(GameObject hero, GameObject cam, GameObject enemy)
         {
             if (hero.TryGetComponent(out HeroMovement heroMovement))
             {
                 heroMovement.SetUp(cam.GetComponent<Camera>());
+            }
+
+            if (enemy.TryGetComponent(out MoveToPlayer moveToPlayer))
+            {
+                moveToPlayer.SetTarget(hero.transform);
             }
         }
 

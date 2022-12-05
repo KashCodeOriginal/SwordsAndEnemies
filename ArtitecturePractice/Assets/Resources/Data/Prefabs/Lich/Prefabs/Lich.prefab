@@ -396,6 +396,7 @@ GameObject:
   - component: {fileID: 4665124114459090}
   - component: {fileID: 95206231959375140}
   - component: {fileID: 3356762957339776744}
+  - component: {fileID: -3991941170401709005}
   - component: {fileID: -2057848492845479152}
   - component: {fileID: -1126176123687633597}
   - component: {fileID: 4789316273813833328}
@@ -416,7 +417,7 @@ Transform:
   m_GameObject: {fileID: 1500939411536426}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4523268626435018}
@@ -456,6 +457,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 516ddbbd819e4224b98c07a3f73e793b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3991941170401709005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500939411536426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b38c6e48756191418c1f770d605f130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _aiDestinationSetter: {fileID: -2057848492845479152}
 --- !u!114 &-2057848492845479152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -514,7 +528,7 @@ MonoBehaviour:
   radius: 0.5
   height: 1
   canMove: 1
-  maxSpeed: 1
+  maxSpeed: 5
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
@@ -553,12 +567,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  smoothType: 1
+  smoothType: 0
   subdivisions: 2
   iterations: 2
   strength: 0.5
   uniformLength: 1
-  maxSegmentLength: 2
+  maxSegmentLength: 0.5
   bezierTangentLength: 0.4
   offset: 0.2
   factor: 0.1
