@@ -1,14 +1,22 @@
-﻿using Enemy.Logic;
-using Pathfinding;
+﻿using Pathfinding;
 using UnityEngine;
+using System.Collections;
 
 namespace Units.Base
 {
     public class Aggro : MonoBehaviour
     {
         [SerializeField] private TriggerObserver _triggerObserver;
-        [SerializeField] private MoveToPlayer _follow;
         [SerializeField] private AIPath _aiPath;
+
+        [SerializeField] private float _cooldown;
+        
+        [SerializeField] private Aggre _aggre;
+
+        private Coroutine _currentAggroCoroutine;
+
+        private bool _hasAggroTarget;
+
 
         private void Start()
         {
@@ -20,24 +28,49 @@ namespace Units.Base
 
         private void TriggerEnter(Collider coll)
         {
-            SwitchFollowOn();
+            if (!_hasAggroTarget)
+            {
+                _hasAggroTarget = true;
+                
+                TryStopRunningCoroutine();
+            
+                SwitchFollowOn();
+            }
         }
 
         private void TriggerExit(Collider coll)
         {
+            if (_hasAggroTarget)
+            {
+                _hasAggroTarget = false;
+                
+                _currentAggroCoroutine = StartCoroutine(SwitchFollowOffAfterCooldown());
+            }
+        }
+
+        private void TryStopRunningCoroutine()
+        {
+            if (_currentAggroCoroutine != null)
+            {
+                StopCoroutine(_currentAggroCoroutine);
+                _currentAggroCoroutine = null;
+            }
+        }
+
+        private IEnumerator SwitchFollowOffAfterCooldown()
+        {
+            yield return new WaitForSeconds(_cooldown);
             SwitchFollowOff();
         }
 
         private void SwitchFollowOn()
         {
-            _follow.enabled = true;
-            _aiPath.enabled = true;
+            _aggre.enabled = true;
         }
 
         private void SwitchFollowOff()
         {
-            _follow.enabled = false;
-            _aiPath.enabled = false;
+            _aggre.enabled = false;
         }
 
         private void OnDisable()

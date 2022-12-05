@@ -98,6 +98,11 @@ namespace Infrastructure.StateMachine
             {
                 moveToPlayer.SetTarget(hero.transform);
             }
+            
+            if (enemy.TryGetComponent(out RotateToPlayer rotateToPlayer))
+            {
+                rotateToPlayer.SetPlayer(hero.transform);
+            }
         }
 
         private void CameraFollow(GameObject camera, GameObject hero)

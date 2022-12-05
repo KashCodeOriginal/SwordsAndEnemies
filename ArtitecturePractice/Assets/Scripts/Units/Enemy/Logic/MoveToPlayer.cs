@@ -1,21 +1,23 @@
+using System;
 using Pathfinding;
+using Units.Base;
 using UnityEngine;
 
 namespace Enemy.Logic
 {
-    public class MoveToPlayer : MonoBehaviour
+    public class MoveToPlayer : Aggre
     {
         [SerializeField] private AIDestinationSetter _aiDestinationSetter;
+        [SerializeField] private AIPath _aiPath;
+        
         private const float REACHED_POINT_DISTANCE = 1;
 
         private Transform _currentTarget;
 
+
         private void Update()
         {
-            if (IsHeroReached())
-            {
-            
-            }
+            IsHeroReached();
         }
 
         public void SetTarget(Transform target)
@@ -25,9 +27,19 @@ namespace Enemy.Logic
             _aiDestinationSetter.target = _currentTarget;
         }
 
-        private bool IsHeroReached()
+        private void IsHeroReached()
         {
-            return Vector3.Distance(transform.position, _currentTarget.position) <= REACHED_POINT_DISTANCE;
+            var distance = Vector3.Distance(transform.position, _currentTarget.position) <= REACHED_POINT_DISTANCE;
+        }
+
+        private void OnEnable()
+        {
+            _aiPath.enabled = true;
+        }
+
+        private void OnDisable()
+        {
+            _aiPath.enabled = false;
         }
     }
 }
