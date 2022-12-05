@@ -2,12 +2,7 @@
 
 namespace Services.PersistentProgress
 {
-    public interface IProgressLoadable
-    {
-        void LoadProgress(PlayerProgress playerProgress);
-    }
-
-    public interface IProgressSavable
+    public interface IProgressSavable : IProgressLoadable
     {
         public void UpdateProgress(PlayerProgress playerProgress);
     }

@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
+using Services;
 using Services.AssetsProvider;
 using Services.Input;
 using Services.PersistentProgress;
@@ -7,6 +8,7 @@ using Services.SaveLoadService;
 using Services.SceneLoader;
 using Services.ServiceLocator;
 using UnityEngine;
+using Watchers.SaveLoadWatchers;
 
 namespace Infrastructure.StateMachine
 {
@@ -45,11 +47,22 @@ namespace Infrastructure.StateMachine
         private void RegisterServices()
         {
             _services.RegisterSingle<IInputService>(InputService());
+            _services.RegisterSingle<ISaveLoadInstancesWatcher>(new SaveLoadInstancesWatcher());
             _services.RegisterSingle<IAssetsProvider>(new AssetsProvider());
-            _services.RegisterSingle<IPlayerFactory>(new PlayerFactory(_services.Single<IAssetsProvider>()));
-            _services.RegisterSingle<IEnvironmentFactory>(new EnvironmentFactory(_services.Single<IAssetsProvider>()));
             _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
-            _services.RegisterSingle<ISaveLoadService>(new SaveLoadService());
+            _services.RegisterSingle<ISaveLoadService>
+            (new SaveLoadService(GetAsset<ISaveLoadInstancesWatcher>(),
+                GetAsset<IPersistentProgressService>()));
+            _services.RegisterSingle<IPlayerFactory>
+            (new PlayerFactory(GetAsset<IAssetsProvider>(),
+                GetAsset<ISaveLoadInstancesWatcher>()));
+            _services.RegisterSingle<IEnvironmentFactory>
+                (new EnvironmentFactory(GetAsset<IAssetsProvider>()));
+        }
+
+        private T GetAsset<T>() where T : IService
+        {
+            return _services.Single<T>();
         }
 
         private IInputService InputService()

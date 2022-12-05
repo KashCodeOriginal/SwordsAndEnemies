@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace Hero
 {
-    public class HeroMovement : MonoBehaviour, IProgressSavable, IProgressLoadable
+    public class HeroMovement : MonoBehaviour, IProgressSavable
     {
         [SerializeField] private CharacterController _characterController;
         [SerializeField] private float _speed;
@@ -59,7 +59,7 @@ namespace Hero
         private void WarpPosition(Vector3Data savedPosition)
         {
             _characterController.enabled = false;
-            transform.position = savedPosition.AsUnityVector();
+            transform.position = savedPosition.AsUnityVector().AddHeight(_characterController.height);
             _characterController.enabled = true;
         }
 

@@ -4,9 +4,11 @@ using Services.SceneLoader;
 using System.Collections.Generic;
 using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
+using Services;
 using Services.PersistentProgress;
 using Services.SaveLoadService;
 using Services.ServiceLocator;
+using Watchers.SaveLoadWatchers;
 
 namespace Infrastructure.StateMachine
 {
@@ -23,7 +25,13 @@ namespace Infrastructure.StateMachine
                 [typeof(GamePlayState)] = new GamePlayState(this),
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
                 [typeof(ProgressLoadingState)] = new ProgressLoadingState(this, services.Single<IPersistentProgressService>(), services.Single<ISaveLoadService>()),
-                [typeof(LevelLoadingState)] = new LevelLoadingState(this, sceneLoader, loadingScreen, services.Single<IPlayerFactory>(), services.Single<IEnvironmentFactory>())
+                [typeof(LevelLoadingState)] = new LevelLoadingState(this,
+                    sceneLoader,
+                    loadingScreen,
+                    services.Single<IPlayerFactory>(),
+                    services.Single<IEnvironmentFactory>(),
+                    services.Single<ISaveLoadInstancesWatcher>(),
+                    services.Single<IPersistentProgressService>())
             }; 
         }
         
