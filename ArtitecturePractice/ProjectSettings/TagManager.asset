@@ -3,19 +3,20 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Fx
   - Water
   - UI
   - Obstacle
   - Player
   - Aggro
-  - 
-  - 
+  - Attack
+  - Hittable
   - 
   - 
   - 

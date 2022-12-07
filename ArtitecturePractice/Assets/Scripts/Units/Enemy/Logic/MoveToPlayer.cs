@@ -1,9 +1,8 @@
-using System;
 using Pathfinding;
 using Units.Base;
 using UnityEngine;
 
-namespace Enemy.Logic
+namespace Units.Enemy.Logic
 {
     public class MoveToPlayer : Aggre
     {

@@ -1,52 +1,55 @@
 using Units.Base;
 using UnityEngine;
 
-public class RotateToPlayer : Aggre
+namespace Units.Enemy.Logic
 {
-    [SerializeField] private float _speed;
-
-    private Transform _playerTransform;
-
-    private Vector3 _positionToLook;
-
-    private void Update()
+    public class RotateToPlayer : Aggre
     {
-        RotateHeroTowards();
-    }
+        [SerializeField] private float _speed;
 
-    public void SetPlayer(Transform playerTransform)
-    {
-        _playerTransform = playerTransform;
-    }
+        private Transform _playerTransform;
 
-    private void RotateHeroTowards()
-    {
-        UpdateLookAtPosition();
+        private Vector3 _positionToLook;
 
-        transform.rotation = SmoothedRotation(transform.rotation, _positionToLook);
-    }
+        private void Update()
+        {
+            RotateHeroTowards();
+        }
 
-    private void UpdateLookAtPosition()
-    {
-        var enemyPosition = transform.position;
+        public void SetPlayer(Transform playerTransform)
+        {
+            _playerTransform = playerTransform;
+        }
 
-        var positionDifference = _playerTransform.position - enemyPosition;
+        private void RotateHeroTowards()
+        {
+            UpdateLookAtPosition();
 
-        _positionToLook = new Vector3(positionDifference.x, enemyPosition.y, positionDifference.z);
-    }
+            transform.rotation = SmoothedRotation(transform.rotation, _positionToLook);
+        }
 
-    private Quaternion SmoothedRotation(Quaternion rotation, Vector3 positionToLook)
-    {
-        return Quaternion.Lerp(rotation, TargetRotation(positionToLook), SpeedFactor());
-    }
+        private void UpdateLookAtPosition()
+        {
+            var enemyPosition = transform.position;
 
-    private float SpeedFactor()
-    {
-        return _speed * Time.deltaTime;
-    }
+            var positionDifference = _playerTransform.position - enemyPosition;
 
-    private Quaternion TargetRotation(Vector3 position)
-    {
-        return Quaternion.LookRotation(position);
+            _positionToLook = new Vector3(positionDifference.x, enemyPosition.y, positionDifference.z);
+        }
+
+        private Quaternion SmoothedRotation(Quaternion rotation, Vector3 positionToLook)
+        {
+            return Quaternion.Lerp(rotation, TargetRotation(positionToLook), SpeedFactor());
+        }
+
+        private float SpeedFactor()
+        {
+            return _speed * Time.deltaTime;
+        }
+
+        private Quaternion TargetRotation(Vector3 position)
+        {
+            return Quaternion.LookRotation(position);
+        }
     }
 }

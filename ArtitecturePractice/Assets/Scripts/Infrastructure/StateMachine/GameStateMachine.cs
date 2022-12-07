@@ -6,6 +6,7 @@ using Infrastructure.Factory.EnemyFactory;
 using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
 using Services;
+using Services.Input;
 using Services.PersistentProgress;
 using Services.SaveLoadService;
 using Services.ServiceLocator;
@@ -33,7 +34,8 @@ namespace Infrastructure.StateMachine
                     services.Single<IEnvironmentFactory>(),
                     services.Single<ISaveLoadInstancesWatcher>(),
                     services.Single<IPersistentProgressService>(),
-                    services.Single<IEnemyFactory>())
+                    services.Single<IEnemyFactory>(),
+                    services.Single<IInputService>())
             }; 
         }
         

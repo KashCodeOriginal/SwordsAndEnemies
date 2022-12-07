@@ -99,5 +99,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _following: {fileID: 0}
   _rotationAngelX: 45
-  _distanceFromTarget: 5
-  _yOffset: 0.5
+  _distanceFromTarget: 10
+  _yOffset: 2

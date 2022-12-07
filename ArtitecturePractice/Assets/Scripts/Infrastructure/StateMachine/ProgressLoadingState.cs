@@ -38,7 +38,22 @@ namespace Infrastructure.StateMachine
 
         private PlayerProgress NewProgress()
         {
-            return new PlayerProgress("MainLevel");
+            var progress = new PlayerProgress("MainLevel")
+            {
+                HeroState =
+                {
+                    MaxHP = 100 
+                },
+                HeroStats =
+                {
+                    Damage = 5,
+                    DamageRadius = 0.5f
+                }
+            };
+
+            progress.HeroState.ResetHP();
+
+            return progress;
         }
     }
 }

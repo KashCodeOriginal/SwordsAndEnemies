@@ -1,7 +1,8 @@
+using Enemy.Animation;
 using Pathfinding;
 using UnityEngine;
 
-namespace Enemy.Animation
+namespace Units.Enemy.Animation
 {
     [RequireComponent(typeof(EnemyAnimator))]
     [RequireComponent(typeof(AIPath))]

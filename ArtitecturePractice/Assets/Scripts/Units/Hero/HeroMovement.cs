@@ -14,13 +14,22 @@ namespace Hero
         private IInputService _inputService;
         private Camera _camera;
 
+        private bool _canMove;
+
         private void Awake()
         {
             _inputService = AllServices.Container.Single<IInputService>();
+
+            _canMove = true;
         }
 
         private void Update()
         {
+            if (!_canMove)
+            {
+                return;
+            }
+            
             Vector3 movementVector = Vector3.zero;
 
             movementVector = TryGetMovementVector(movementVector);
@@ -33,6 +42,11 @@ namespace Hero
         public void SetUp(Camera cam)
         {
             _camera = cam;
+        }
+
+        public void StopMovement()
+        {
+            _canMove = false;
         }
 
         public void UpdateProgress(PlayerProgress playerProgress)
@@ -60,6 +74,7 @@ namespace Hero
         {
             _characterController.enabled = false;
             transform.position = savedPosition.AsUnityVector().AddHeight(_characterController.height);
+            
             _characterController.enabled = true;
         }
 
