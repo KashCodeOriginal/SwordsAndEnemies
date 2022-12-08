@@ -5,7 +5,7 @@ namespace Infrastructure.Factory.EnemyFactory
 {
     public interface IEnemyFactory : IEnemyFactoryInfo, IService
     {
-        public GameObject CreateInstance(string prefabPath);
+        public GameObject CreateInstance(MonsterTypeId monsterTypeId, Transform transform);
 
         public void DestroyInstance(GameObject instance);
 

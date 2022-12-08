@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d337514633e046728da72f6911f3e422, type: 3}
+  m_Name: Golem
+  m_EditorClassIdentifier: 
+  <MonsterTypeId>k__BackingField: 1
+  <Name>k__BackingField: Golem
+  <HealthPoints>k__BackingField: 25
+  <MaxHealthPoints>k__BackingField: 25
+  <Damage>k__BackingField: 30
+  <EffectiveDistance>k__BackingField: 0.24
+  <Cleavage>k__BackingField: 0.34
+  <AttackCooldown>k__BackingField: 3.3
+  <MovementSpeed>k__BackingField: 3.2
+  <Prefab>k__BackingField: {fileID: 5261016488348296696, guid: fef8ee76ba818f84b81b11da6bda5ddf, type: 3}

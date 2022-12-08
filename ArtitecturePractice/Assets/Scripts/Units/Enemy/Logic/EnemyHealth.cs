@@ -14,8 +14,9 @@ namespace Units.Enemy.Logic
 
         [SerializeField] private float _healthPoints;
         [SerializeField] private float _maxHealthPoint;
-        
+
         public float HealthPoints => _healthPoints;
+
         public float MaxHealthPoints => _maxHealthPoint;
 
         public void TakeDamage(float damage)
@@ -32,6 +33,12 @@ namespace Units.Enemy.Logic
             IsHealthChanged?.Invoke(_healthPoints);
             
             _enemyAnimator.PlayHit();
+        }
+
+        public void SetUp(float healthPoints, float maxHealthPoints)
+        {
+            _healthPoints = healthPoints;
+            _maxHealthPoint = maxHealthPoints;
         }
     }
 }

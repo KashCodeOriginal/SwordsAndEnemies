@@ -8,6 +8,7 @@ using Services.PersistentProgress;
 using Services.SaveLoadService;
 using Services.SceneLoader;
 using Services.ServiceLocator;
+using Services.StaticData;
 using UnityEngine;
 using Watchers.SaveLoadWatchers;
 
@@ -59,8 +60,18 @@ namespace Infrastructure.StateMachine
                 GetAsset<ISaveLoadInstancesWatcher>()));
             _services.RegisterSingle<IEnvironmentFactory>
                 (new EnvironmentFactory(GetAsset<IAssetsProvider>()));
+            
+            RegisterStaticDataService();
+            
             _services.RegisterSingle<IEnemyFactory>
-                (new EnemyFactory(GetAsset<IAssetsProvider>()));
+                (new EnemyFactory(GetAsset<IStaticDataService>(), GetAsset<IPlayerFactory>()));
+        }
+
+        private void RegisterStaticDataService()
+        {
+            IStaticDataService staticDataService = new StaticDataService();
+            staticDataService.LoadMonsters();
+            _services.RegisterSingle(staticDataService);
         }
 
         private T GetAsset<T>() where T : IService

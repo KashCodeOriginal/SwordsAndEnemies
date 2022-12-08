@@ -1,26 +1,35 @@
 using System.Collections.Generic;
-using Services.AssetsProvider;
+using Data.Static;
+using Infrastructure.Factory.PlayerFactory;
+using Pathfinding;
+using Services.StaticData;
+using Units.Enemy.Logic;
 using UnityEngine;
 
 namespace Infrastructure.Factory.EnemyFactory
 {
     public class EnemyFactory : IEnemyFactory
     {
-        public EnemyFactory(IAssetsProvider assetsProvider)
+        public EnemyFactory(IStaticDataService staticDataService, IPlayerFactory playerFactory)
         {
-            _assetsProvider = assetsProvider;
+            _staticDataService = staticDataService;
+            _playerFactory = playerFactory;
         }
 
         public IReadOnlyList<GameObject> Instances => _instances;
 
-        private readonly IAssetsProvider _assetsProvider;
+        private readonly IStaticDataService _staticDataService;
+        private readonly IPlayerFactory _playerFactory;
 
         private List<GameObject> _instances = new List<GameObject>();
 
-
-        public GameObject CreateInstance(string prefabPath)
+        public GameObject CreateInstance(MonsterTypeId monsterTypeId, Transform transform)
         {
-            var instance = InstantiateInstance(prefabPath);
+            var monsterStaticData = _staticDataService.GetMonsterData(monsterTypeId);
+            
+            var instance = InstantiateInstance(monsterStaticData.Prefab, transform);
+            
+            SetUp(instance, monsterStaticData);
 
             return instance;
         }
@@ -38,15 +47,46 @@ namespace Infrastructure.Factory.EnemyFactory
             _instances.Clear();
         }
 
-        private GameObject InstantiateInstance(string prefabPath)
+        private GameObject InstantiateInstance(GameObject prefab, Transform parent)
         {
-            var enemyPrefab = _assetsProvider.GetAssetByPath<GameObject>(prefabPath);
-
-            var enemyInstance = Object.Instantiate(enemyPrefab);
+            var enemyInstance = Object.Instantiate(prefab, parent.position, Quaternion.identity, parent);
             
             _instances.Add(enemyInstance);
 
             return enemyInstance;
+        }
+
+        private void SetUp(GameObject instance, MonsterStaticData monsterStaticData)
+        {
+            if (instance.TryGetComponent(out IHealth health))
+            {
+                health.SetUp(monsterStaticData.HealthPoints, monsterStaticData.MaxHealthPoints);
+            }
+
+            if (instance.TryGetComponent(out AIPath aiPath))
+            {
+                aiPath.maxSpeed = monsterStaticData.MovementSpeed;
+            }
+
+            if (instance.TryGetComponent(out EnemyAttack enemyAttack))
+            {
+                enemyAttack.SetUp(monsterStaticData.Damage, monsterStaticData.AttackCooldown, monsterStaticData.Cleavage, monsterStaticData.EffectiveDistance);
+            }
+            
+            if (instance.TryGetComponent(out MoveToPlayer moveToPlayer))
+            {
+                moveToPlayer.SetTarget(_playerFactory.PlayerInstance.transform);
+            }
+            
+            if (instance.TryGetComponent(out RotateToPlayer rotateToPlayer))
+            {   
+                rotateToPlayer.SetPlayer(_playerFactory.PlayerInstance.transform);
+            }
+
+            if (instance.TryGetComponent(out EnemyAttack attack))
+            {
+                attack.SetUpPlayer(_playerFactory.PlayerInstance.transform);
+            }
         }
     }
 }

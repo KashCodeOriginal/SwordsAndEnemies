@@ -12,13 +12,15 @@ namespace Units.Hero
         [SerializeField] private float _maxHealthPoints;
 
         [SerializeField] private HeroAnimator _heroAnimator;
-    
+
         public float HealthPoints => _heroState.CurrentHP;
+
         public float MaxHealthPoints => _heroState.MaxHP;
 
         private HeroState _heroState;
 
         public event UnityAction<float> IsHealthChanged;
+
         public event UnityAction IsUnitDead;
 
         public void LoadProgress(PlayerProgress playerProgress)
@@ -34,6 +36,12 @@ namespace Units.Hero
         {
             playerProgress.HeroState.CurrentHP = _healthPoints;
             playerProgress.HeroState.MaxHP = _maxHealthPoints;
+        }
+
+        public void SetUp(float healthPoints, float maxHealthPoints)
+        {
+            _healthPoints = healthPoints;
+            _maxHealthPoints = maxHealthPoints;
         }
 
         public void TakeDamage(float damage)

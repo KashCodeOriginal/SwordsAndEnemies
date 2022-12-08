@@ -91,10 +91,8 @@ namespace Infrastructure.StateMachine
             var gameplayScreen = _environmentFactory.CreateInstance(AssetsConstants.GAMEPLAY_SCREEN_PREFAB_PATH);
             var camera = _environmentFactory.CreateInstance(AssetsConstants.CAMERA_PREFAB_PATH);
 
-            var enemy = _enemyFactory.CreateInstance(AssetsConstants.ENEMY_PREFAB_PATH);
-
             CameraFollow(camera, hero);
-            SetUp(hero, camera, enemy, gameplayScreen);
+            SetUp(hero, camera, gameplayScreen);
         }
 
         private void InitSpawners()
@@ -107,7 +105,7 @@ namespace Infrastructure.StateMachine
             }
         }
 
-        private void SetUp(GameObject hero, GameObject cam, GameObject enemy, GameObject gameplayScreen)
+        private void SetUp(GameObject hero, GameObject cam, GameObject gameplayScreen)
         {
             if (hero.TryGetComponent(out HeroMovement heroMovement))
             {
@@ -117,21 +115,6 @@ namespace Infrastructure.StateMachine
             if (hero.TryGetComponent(out HeroAttack heroAttack))
             {
                 heroAttack.SetUp(_inputService);
-            }
-
-            if (enemy.TryGetComponent(out MoveToPlayer moveToPlayer))
-            {
-                moveToPlayer.SetTarget(hero.transform);
-            }
-            
-            if (enemy.TryGetComponent(out RotateToPlayer rotateToPlayer))
-            {
-                rotateToPlayer.SetPlayer(hero.transform);
-            }
-
-            if (enemy.TryGetComponent(out EnemyAttack attack))
-            {
-                attack.SetUpPlayer(hero.transform);
             }
 
             if (gameplayScreen.TryGetComponent(out ActorUI actorUI))

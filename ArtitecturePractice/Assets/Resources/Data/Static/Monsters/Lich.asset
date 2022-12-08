@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d337514633e046728da72f6911f3e422, type: 3}
+  m_Name: Lich
+  m_EditorClassIdentifier: 
+  <MonsterTypeId>k__BackingField: 0
+  <Name>k__BackingField: Lich
+  <HealthPoints>k__BackingField: 0
+  <MaxHealthPoints>k__BackingField: 0
+  <Damage>k__BackingField: 1
+  <EffectiveDistance>k__BackingField: 0.1
+  <Cleavage>k__BackingField: 0.1
+  <AttackCooldown>k__BackingField: 0
+  <MovementSpeed>k__BackingField: 0
+  <Prefab>k__BackingField: {fileID: 6798299455511659827, guid: 497ea9a27b7cc7d46a74460b71f7bf3b, type: 3}

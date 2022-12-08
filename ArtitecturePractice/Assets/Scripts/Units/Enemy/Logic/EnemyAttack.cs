@@ -8,13 +8,12 @@ namespace Units.Enemy.Logic
     public class EnemyAttack : MonoBehaviour
     {
         [SerializeField] private EnemyAnimator _enemyAnimator;
-
-        [SerializeField] private float _damage;
-        [SerializeField] private float _cooldown;
-
         [SerializeField] private LayerMask _layerMask;
-        [SerializeField] private float Cleavage;
-        [SerializeField] private float _distance;
+
+        private float _damage;
+        private float _cooldown;
+        private float _cleavage;
+        private float _distance;
 
         private Transform _playerTransform;
         
@@ -41,6 +40,14 @@ namespace Units.Enemy.Logic
             {
                 hit.transform.GetComponent<IHealth>().TakeDamage(_damage);
             }
+        }
+
+        public void SetUp(float damage, float cooldown, float cleavage, float distance)
+        {
+            _damage = damage;
+            _cooldown = cooldown;
+            _cleavage = cleavage;
+            _distance = distance;
         }
 
         public void EnableAttack()
@@ -89,7 +96,7 @@ namespace Units.Enemy.Logic
 
         private int TryGetHits(out Collider hit, Vector3 attackPointCenter)
         {
-            var hitCount = Physics.OverlapSphereNonAlloc(attackPointCenter, Cleavage, _hits, _layerMask);
+            var hitCount = Physics.OverlapSphereNonAlloc(attackPointCenter, _cleavage, _hits, _layerMask);
             hit = _hits.FirstOrDefault();
             return hitCount;
         }
