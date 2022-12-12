@@ -6,5 +6,6 @@ namespace Services.StaticData
     {
         public void LoadMonsters();
         public MonsterStaticData GetMonsterData(MonsterTypeId monsterTypeId);
+        public LevelStaticData ForLevel(string key);
     }
 }

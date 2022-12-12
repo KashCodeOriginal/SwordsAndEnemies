@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using Infrastructure.Factory.EnemyFactory;
 using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
+using Infrastructure.Factory.SpawnersFactory;
 using Services;
 using Services.Input;
 using Services.PersistentProgress;
 using Services.SaveLoadService;
 using Services.ServiceLocator;
+using Services.StaticData;
 using Watchers.SaveLoadWatchers;
 
 namespace Infrastructure.StateMachine
@@ -34,8 +36,9 @@ namespace Infrastructure.StateMachine
                     services.Single<IEnvironmentFactory>(),
                     services.Single<ISaveLoadInstancesWatcher>(),
                     services.Single<IPersistentProgressService>(),
-                    services.Single<IEnemyFactory>(),
-                    services.Single<IInputService>())
+                    services.Single<IInputService>(),
+                    services.Single<IStaticDataService>(),
+                    services.Single<ISpawnerFactory>())
             }; 
         }
         

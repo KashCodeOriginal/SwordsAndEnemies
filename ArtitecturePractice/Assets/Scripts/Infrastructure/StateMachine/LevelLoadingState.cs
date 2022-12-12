@@ -7,12 +7,13 @@ using UI.LoadingScreen;
 using Services.SceneLoader;
 using Infrastructure.Factory.PlayerFactory;
 using Infrastructure.Factory.EnvironmentFactory;
+using Infrastructure.Factory.SpawnersFactory;
 using Services.Input;
 using Services.PersistentProgress;
-using Spawners;
+using Services.StaticData;
 using UI.GameplayScreen;
-using Units.Enemy.Logic;
 using Units.Hero;
+using UnityEngine.SceneManagement;
 using Watchers.SaveLoadWatchers;
 
 namespace Infrastructure.StateMachine
@@ -22,7 +23,7 @@ namespace Infrastructure.StateMachine
         public LevelLoadingState(GameStateMachine gameStateMachine, SceneLoader sceneLoader,
             LoadingScreen loadingScreen, IPlayerFactory playerFactory, IEnvironmentFactory environmentFactory,
             ISaveLoadInstancesWatcher saveLoadInstancesWatcher, IPersistentProgressService persistentProgressService,
-            IEnemyFactory enemyFactory, IInputService inputService)
+            IInputService inputService, IStaticDataService staticDataService, ISpawnerFactory spawnerFactory)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
@@ -31,27 +32,22 @@ namespace Infrastructure.StateMachine
             _environmentFactory = environmentFactory;
             _saveLoadInstancesWatcher = saveLoadInstancesWatcher;
             _persistentProgressService = persistentProgressService;
-            _enemyFactory = enemyFactory;
             _inputService = inputService;
+            _staticDataService = staticDataService;
+            _spawnerFactory = spawnerFactory;
         }
 
 
         private readonly GameStateMachine _gameStateMachine;
-
         private readonly SceneLoader _sceneLoader;
-
         private readonly LoadingScreen _loadingScreen;
-
         private readonly IPlayerFactory _playerFactory;
-
         private readonly IEnvironmentFactory _environmentFactory;
-
         private readonly ISaveLoadInstancesWatcher _saveLoadInstancesWatcher;
         private readonly IPersistentProgressService _persistentProgressService;
-        private readonly IEnemyFactory _enemyFactory;
         private readonly IInputService _inputService;
-
-        private const string SpawnerTag = "Spawner";
+        private readonly IStaticDataService _staticDataService;
+        private readonly ISpawnerFactory _spawnerFactory;
 
         public void Enter(string sceneName)
         {
@@ -97,11 +93,13 @@ namespace Infrastructure.StateMachine
 
         private void InitSpawners()
         {
-            var spawners = GameObject.FindGameObjectsWithTag(SpawnerTag);
+            var sceneKey = SceneManager.GetActiveScene().name;
 
-            foreach (var spawner in spawners)
+            var levelData = _staticDataService.ForLevel(sceneKey);
+
+            foreach (var data in levelData.EnemySpawners)
             {
-                _saveLoadInstancesWatcher.RegisterProgress(spawner);
+                _spawnerFactory.CreateSpawner(data.Position, data.ID, data.MonsterTypeID);
             }
         }
 
@@ -121,6 +119,8 @@ namespace Infrastructure.StateMachine
             {
                 actorUI.SetUp(hero.GetComponent<HeroHealth>());
             }
+
+            gameplayScreen.GetComponentInChildren<LootCounter>().Construct(_persistentProgressService.PlayerProgress.WorldData);
         }
 
         private void CameraFollow(GameObject camera, GameObject hero)

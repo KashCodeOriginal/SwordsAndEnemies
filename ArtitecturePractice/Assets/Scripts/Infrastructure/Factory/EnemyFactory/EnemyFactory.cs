@@ -1,25 +1,39 @@
 using System.Collections.Generic;
 using Data.Static;
+using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
 using Pathfinding;
+using Services.PersistentProgress;
 using Services.StaticData;
+using Spawners.Loot;
 using Units.Enemy.Logic;
 using UnityEngine;
+using Watchers.SaveLoadWatchers;
 
 namespace Infrastructure.Factory.EnemyFactory
 {
     public class EnemyFactory : IEnemyFactory
     {
-        public EnemyFactory(IStaticDataService staticDataService, IPlayerFactory playerFactory)
+        public EnemyFactory(IStaticDataService staticDataService, 
+            IPlayerFactory playerFactory, 
+            IEnvironmentFactory environmentFactory, 
+            ISaveLoadInstancesWatcher saveLoadInstancesWatcher,
+            IPersistentProgressService persistentProgressService)
         {
             _staticDataService = staticDataService;
             _playerFactory = playerFactory;
+            _environmentFactory = environmentFactory;
+            _saveLoadInstancesWatcher = saveLoadInstancesWatcher;
+            _persistentProgressService = persistentProgressService;
         }
 
         public IReadOnlyList<GameObject> Instances => _instances;
 
         private readonly IStaticDataService _staticDataService;
         private readonly IPlayerFactory _playerFactory;
+        private readonly IEnvironmentFactory _environmentFactory;
+        private readonly ISaveLoadInstancesWatcher _saveLoadInstancesWatcher;
+        private readonly IPersistentProgressService _persistentProgressService;
 
         private List<GameObject> _instances = new List<GameObject>();
 
@@ -87,6 +101,10 @@ namespace Infrastructure.Factory.EnemyFactory
             {
                 attack.SetUpPlayer(_playerFactory.PlayerInstance.transform);
             }
+
+            var lootSpawner = instance.GetComponentInChildren<LootSpawner>();
+            lootSpawner.Construct(_environmentFactory, _saveLoadInstancesWatcher, _persistentProgressService);
+            lootSpawner.SetLoot(monsterStaticData.MinLoot, monsterStaticData.MaxLoot);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Factory.EnemyFactory;
 using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
+using Infrastructure.Factory.SpawnersFactory;
 using Services;
 using Services.AssetsProvider;
 using Services.Input;
@@ -41,11 +42,6 @@ namespace Infrastructure.StateMachine
             
         }
 
-        private void EnterLoadLevel()
-        {
-            _gameStateMachine.SwitchState<ProgressLoadingState>();
-        }
-
         private void RegisterServices()
         {
             _services.RegisterSingle<IInputService>(InputService());
@@ -58,13 +54,29 @@ namespace Infrastructure.StateMachine
             _services.RegisterSingle<IPlayerFactory>
             (new PlayerFactory(GetAsset<IAssetsProvider>(),
                 GetAsset<ISaveLoadInstancesWatcher>()));
+
+            RegisterStaticDataService();
+
+
             _services.RegisterSingle<IEnvironmentFactory>
                 (new EnvironmentFactory(GetAsset<IAssetsProvider>()));
             
-            RegisterStaticDataService();
-            
             _services.RegisterSingle<IEnemyFactory>
-                (new EnemyFactory(GetAsset<IStaticDataService>(), GetAsset<IPlayerFactory>()));
+            (new EnemyFactory
+            (GetAsset<IStaticDataService>(), 
+                GetAsset<IPlayerFactory>(), 
+                GetAsset<IEnvironmentFactory>(), 
+                GetAsset<ISaveLoadInstancesWatcher>(),
+                GetAsset<IPersistentProgressService>()));
+
+
+            _services.RegisterSingle<ISpawnerFactory>
+                (new SpawnerFactory(GetAsset<IAssetsProvider>(), GetAsset<ISaveLoadInstancesWatcher>(), GetAsset<IEnemyFactory>()));
+        }
+
+        private void EnterLoadLevel()
+        {
+            _gameStateMachine.SwitchState<ProgressLoadingState>();
         }
 
         private void RegisterStaticDataService()

@@ -21,4 +21,6 @@ MonoBehaviour:
   <Cleavage>k__BackingField: 0.34
   <AttackCooldown>k__BackingField: 3.3
   <MovementSpeed>k__BackingField: 3.2
+  <MinLoot>k__BackingField: 1
+  <MaxLoot>k__BackingField: 5
   <Prefab>k__BackingField: {fileID: 5261016488348296696, guid: fef8ee76ba818f84b81b11da6bda5ddf, type: 3}
