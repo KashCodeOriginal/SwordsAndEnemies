@@ -1,11 +1,12 @@
 using Data.Player;
-using UnityEngine;
+using Extentions;
 using Services.Input;
 using Services.PersistentProgress;
 using Services.ServiceLocator;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Hero
+namespace Units.Hero
 {
     public class HeroMovement : MonoBehaviour, IProgressSavable
     {

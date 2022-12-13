@@ -1,5 +1,8 @@
-﻿public enum MonsterTypeId
+﻿namespace Spawners.Enemy
 {
-    Lich = 0,
-    Golem = 1
+    public enum MonsterTypeId
+    {
+        Lich = 0,
+        Golem = 1
+    }
 }

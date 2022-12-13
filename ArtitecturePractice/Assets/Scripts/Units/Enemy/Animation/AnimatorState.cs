@@ -1,4 +1,4 @@
-﻿namespace Enemy.Animation
+﻿namespace Units.Enemy.Animation
 {
     public enum AnimatorState
     {

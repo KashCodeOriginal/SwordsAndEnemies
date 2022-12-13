@@ -3,13 +3,16 @@ using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
 using Infrastructure.Factory.SpawnersFactory;
 using Services;
+using Services.Ads;
 using Services.AssetsProvider;
 using Services.Input;
 using Services.PersistentProgress;
-using Services.SaveLoadService;
+using Services.SaveLoad;
 using Services.SceneLoader;
 using Services.ServiceLocator;
 using Services.StaticData;
+using UI.Services.Factory;
+using UI.Services.WindowsService;
 using UnityEngine;
 using Watchers.SaveLoadWatchers;
 
@@ -53,14 +56,21 @@ namespace Infrastructure.StateMachine
                 GetAsset<IPersistentProgressService>()));
             _services.RegisterSingle<IPlayerFactory>
             (new PlayerFactory(GetAsset<IAssetsProvider>(),
-                GetAsset<ISaveLoadInstancesWatcher>()));
+                GetAsset<ISaveLoadInstancesWatcher>(), GetAsset<IStaticDataService>()));
 
             RegisterStaticDataService();
+            RegisterAdsService();
+
+            _services.RegisterSingle<IUIFactory>(new UIFactory(GetAsset<IAssetsProvider>(), 
+                GetAsset<IStaticDataService>(), 
+                GetAsset<IPersistentProgressService>(), GetAsset<IAdsService>()));
+
+            _services.RegisterSingle<IWindowService>(new WindowService(GetAsset<IUIFactory>()));
 
 
             _services.RegisterSingle<IEnvironmentFactory>
                 (new EnvironmentFactory(GetAsset<IAssetsProvider>()));
-            
+
             _services.RegisterSingle<IEnemyFactory>
             (new EnemyFactory
             (GetAsset<IStaticDataService>(), 
@@ -69,9 +79,19 @@ namespace Infrastructure.StateMachine
                 GetAsset<ISaveLoadInstancesWatcher>(),
                 GetAsset<IPersistentProgressService>()));
 
-
             _services.RegisterSingle<ISpawnerFactory>
-                (new SpawnerFactory(GetAsset<IAssetsProvider>(), GetAsset<ISaveLoadInstancesWatcher>(), GetAsset<IEnemyFactory>()));
+                (new SpawnerFactory(GetAsset<IAssetsProvider>(), 
+                    GetAsset<ISaveLoadInstancesWatcher>(),
+                    GetAsset<IEnemyFactory>()));
+            
+            _services.RegisterSingle<IGameStateMachine>(_gameStateMachine);
+        }
+
+        private void RegisterAdsService()
+        {
+            var adsService = new AdsService();
+            adsService.Initialize();
+            _services.RegisterSingle<IAdsService>(adsService);
         }
 
         private void EnterLoadLevel()
@@ -82,7 +102,7 @@ namespace Infrastructure.StateMachine
         private void RegisterStaticDataService()
         {
             IStaticDataService staticDataService = new StaticDataService();
-            staticDataService.LoadMonsters();
+            staticDataService.LoadStaticData();
             _services.RegisterSingle(staticDataService);
         }
 

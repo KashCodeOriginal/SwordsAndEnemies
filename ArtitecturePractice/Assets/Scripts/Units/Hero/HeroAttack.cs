@@ -3,6 +3,7 @@ using Data.Player;
 using Services.Input;
 using Services.PersistentProgress;
 using Services.ServiceLocator;
+using Units.Base;
 using Units.Enemy.Logic;
 using UnityEngine;
 

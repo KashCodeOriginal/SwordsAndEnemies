@@ -1,4 +1,5 @@
 ﻿using System;
+using Spawners.Enemy;
 using UnityEngine;
 
 namespace Services.StaticData

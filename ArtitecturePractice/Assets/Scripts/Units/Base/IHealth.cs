@@ -1,6 +1,6 @@
 ﻿ using UnityEngine.Events;
 
-namespace Units.Enemy.Logic
+ namespace Units.Base
 {
     public interface IHealth
     {

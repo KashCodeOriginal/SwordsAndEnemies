@@ -1,5 +1,6 @@
 using System.Linq;
-using Enemy.Animation;
+using Units.Base;
+using Units.Enemy.Animation;
 using Units.Hero;
 using UnityEngine;
 

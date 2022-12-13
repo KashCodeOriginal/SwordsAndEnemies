@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Spawners
+namespace Spawners.Enemy
 {
     public class SpawnMarker : MonoBehaviour
     {

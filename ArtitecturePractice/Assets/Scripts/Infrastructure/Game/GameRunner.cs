@@ -12,7 +12,7 @@ namespace Infrastructure.Game
 
             if (bootstrapper == null)
             {
-                Instantiate(_gameBootstrapperPrefab);
+                 Instantiate(_gameBootstrapperPrefab);
             }
         }
     }

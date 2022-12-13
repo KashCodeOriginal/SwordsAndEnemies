@@ -2,21 +2,21 @@ using System;
 using UI.LoadingScreen;
 using Services.SceneLoader;
 using System.Collections.Generic;
-using Infrastructure.Factory.EnemyFactory;
 using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
 using Infrastructure.Factory.SpawnersFactory;
-using Services;
 using Services.Input;
 using Services.PersistentProgress;
-using Services.SaveLoadService;
+using Services.SaveLoad;
 using Services.ServiceLocator;
 using Services.StaticData;
+using UI.Services.Factory;
+using UI.Services.WindowsService;
 using Watchers.SaveLoadWatchers;
 
 namespace Infrastructure.StateMachine
 {
-    public class GameStateMachine
+    public class GameStateMachine : IGameStateMachine
     {
         private readonly Dictionary<Type,IBaseState> _states;
 
@@ -38,7 +38,9 @@ namespace Infrastructure.StateMachine
                     services.Single<IPersistentProgressService>(),
                     services.Single<IInputService>(),
                     services.Single<IStaticDataService>(),
-                    services.Single<ISpawnerFactory>())
+                    services.Single<ISpawnerFactory>(),
+                    services.Single<IWindowService>(),
+                    services.Single<IUIFactory>())
             }; 
         }
         

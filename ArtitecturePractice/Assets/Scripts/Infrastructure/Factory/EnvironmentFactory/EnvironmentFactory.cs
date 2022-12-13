@@ -1,10 +1,6 @@
 ﻿using System.Collections.Generic;
-using Data.Assets;
-using Infrastructure.Factory.EnemyFactory;
 using Services.AssetsProvider;
-using Spawners;
 using UnityEngine;
-using Watchers.SaveLoadWatchers;
 
 namespace Infrastructure.Factory.EnvironmentFactory
 {

@@ -4,7 +4,7 @@ using Services.PersistentProgress;
 using Units.Enemy.Logic;
 using UnityEngine;
 
-namespace Spawners
+namespace Spawners.Enemy
 {
     public class SpawnPoint : MonoBehaviour, IProgressSavable
     {

@@ -1,5 +1,6 @@
-using Enemy.Animation;
 using UI.GameplayScreen;
+using Units.Base;
+using Units.Enemy.Animation;
 using UnityEngine;
 using UnityEngine.Events;
 

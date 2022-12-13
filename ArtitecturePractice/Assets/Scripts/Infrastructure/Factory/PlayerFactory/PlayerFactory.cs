@@ -3,26 +3,29 @@ using Data;
 using Data.Assets;
 using UnityEngine;
 using Services.AssetsProvider;
+using Services.StaticData;
 using Watchers.SaveLoadWatchers;
 
 namespace Infrastructure.Factory.PlayerFactory
 {
     public class PlayerFactory : IPlayerFactory
     {
-        public PlayerFactory(IAssetsProvider assetsProvider, ISaveLoadInstancesWatcher saveLoadInstancesWatcher)
+        public PlayerFactory(IAssetsProvider assetsProvider, ISaveLoadInstancesWatcher saveLoadInstancesWatcher, IStaticDataService staticDataService)
         {
             _assetsProvider = assetsProvider;
             _saveLoadInstancesWatcher = saveLoadInstancesWatcher;
+            _staticDataService = staticDataService;
         }
 
         public GameObject PlayerInstance { get; private set; }
         
         private readonly IAssetsProvider _assetsProvider;
         private readonly ISaveLoadInstancesWatcher _saveLoadInstancesWatcher;
+        private readonly IStaticDataService _staticDataService;
 
-        public GameObject CreatePlayer()
+        public GameObject CreatePlayer(Vector3 position)
         {
-            var instance = InstantiateRegistered(AssetsConstants.PLAYER_PREFAB_PATH, new Vector3(10, 1, 10));
+            var instance = InstantiateRegistered(AssetsConstants.PLAYER_PREFAB_PATH, position);
 
             PlayerInstance = instance;
 

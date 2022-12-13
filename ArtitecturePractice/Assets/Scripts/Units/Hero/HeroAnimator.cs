@@ -1,5 +1,5 @@
 using System;
-using Enemy.Animation;
+using Units.Enemy.Animation;
 using UnityEngine;
 
 namespace Units.Hero

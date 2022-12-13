@@ -1,5 +1,6 @@
 using Data.Player;
 using Services.PersistentProgress;
+using Units.Base;
 using Units.Enemy.Logic;
 using UnityEngine;
 using UnityEngine.Events;

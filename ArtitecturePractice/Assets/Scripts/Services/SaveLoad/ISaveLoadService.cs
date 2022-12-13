@@ -1,6 +1,6 @@
 ﻿using Data.Player;
 
-namespace Services.SaveLoadService
+namespace Services.SaveLoad
 {
     public interface ISaveLoadService : IService
     {

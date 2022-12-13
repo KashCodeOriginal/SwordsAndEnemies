@@ -1,4 +1,5 @@
-﻿using Units.Enemy.Logic;
+﻿using Units.Base;
+using Units.Enemy.Logic;
 using Units.Hero;
 using UnityEngine;
 

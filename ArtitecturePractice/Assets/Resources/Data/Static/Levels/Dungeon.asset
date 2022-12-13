@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4726688b3c874e4bb00efaeafffedd6d, type: 3}
+  m_Name: Dungeon
+  m_EditorClassIdentifier: 
+  LevelKey: Dungeon
+  EnemySpawners:
+  - ID: MainLevel_43886114-9423-471a-b1d5-878a533904f2
+    MonsterTypeID: 0
+    Position: {x: -39.5, y: 0, z: -32.3}
+  InitialPlayerPosition: {x: 24.8, y: 0, z: 21.4}

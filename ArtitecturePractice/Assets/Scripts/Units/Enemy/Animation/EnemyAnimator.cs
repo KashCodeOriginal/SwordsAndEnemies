@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Enemy.Animation
+namespace Units.Enemy.Animation
 {
     public class EnemyAnimator : MonoBehaviour, IAnimationStateReader
     {

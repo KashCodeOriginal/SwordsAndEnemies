@@ -9,5 +9,6 @@ namespace Data.Assets
         public const string PLAYER_PREFAB_PATH = "Data/Prefabs/Entities/Player/Player";
         public const string GAMEPLAY_SCREEN_PREFAB_PATH = "Data/Prefabs/UI/GameplayScreen";
         public const string CAMERA_PREFAB_PATH = "Data/Prefabs/Entities/Camera/MainCamera";
+        public const string UI_ROOT = "Data/Prefabs/UI/UIRoot";
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Enemy.Animation
+﻿namespace Units.Enemy.Animation
 {
     public interface IAnimationStateReader
     {

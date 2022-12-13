@@ -2,6 +2,7 @@
 using Infrastructure.Factory.EnemyFactory;
 using Services.AssetsProvider;
 using Spawners;
+using Spawners.Enemy;
 using UnityEngine;
 using Watchers.SaveLoadWatchers;
 

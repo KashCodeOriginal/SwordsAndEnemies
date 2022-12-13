@@ -13,6 +13,12 @@ namespace Data.Player
         {
             Collected += loot.Value;
             IsAmountChanged?.Invoke();
+        } 
+        
+        public void Add(int loot)
+        {
+            Collected += loot;
+            IsAmountChanged?.Invoke();
         }
-    }
+    }   
 }
