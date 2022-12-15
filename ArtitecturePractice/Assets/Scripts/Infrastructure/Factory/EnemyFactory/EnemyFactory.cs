@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data.Static;
 using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
 using Pathfinding;
+using Services.AssetsProvider;
 using Services.PersistentProgress;
 using Services.StaticData;
 using Spawners.Enemy;
@@ -20,13 +22,15 @@ namespace Infrastructure.Factory.EnemyFactory
             IPlayerFactory playerFactory, 
             IEnvironmentFactory environmentFactory, 
             ISaveLoadInstancesWatcher saveLoadInstancesWatcher,
-            IPersistentProgressService persistentProgressService)
+            IPersistentProgressService persistentProgressService,
+            IAddressableAssetProvider addressableAssetProvider)
         {
             _staticDataService = staticDataService;
             _playerFactory = playerFactory;
             _environmentFactory = environmentFactory;
             _saveLoadInstancesWatcher = saveLoadInstancesWatcher;
             _persistentProgressService = persistentProgressService;
+            _addressableAssetProvider = addressableAssetProvider;
         }
 
         public IReadOnlyList<GameObject> Instances => _instances;
@@ -36,14 +40,17 @@ namespace Infrastructure.Factory.EnemyFactory
         private readonly IEnvironmentFactory _environmentFactory;
         private readonly ISaveLoadInstancesWatcher _saveLoadInstancesWatcher;
         private readonly IPersistentProgressService _persistentProgressService;
+        private readonly IAddressableAssetProvider _addressableAssetProvider;
 
         private List<GameObject> _instances = new List<GameObject>();
 
-        public GameObject CreateInstance(MonsterTypeId monsterTypeId, Transform transform)
+        public async Task<GameObject> CreateInstance(MonsterTypeId monsterTypeId, Transform transform)
         {
             var monsterStaticData = _staticDataService.GetMonsterData(monsterTypeId);
+
+            var prefab = await _addressableAssetProvider.GetAsset<GameObject>(monsterStaticData.PrefabReference);
             
-            var instance = InstantiateInstance(monsterStaticData.Prefab, transform);
+            var instance = InstantiateInstance(prefab, transform);
             
             SetUp(instance, monsterStaticData);
 
@@ -105,7 +112,7 @@ namespace Infrastructure.Factory.EnemyFactory
             }
 
             var lootSpawner = instance.GetComponentInChildren<LootSpawner>();
-            lootSpawner.Construct(_environmentFactory, _saveLoadInstancesWatcher, _persistentProgressService);
+            lootSpawner.Construct(_environmentFactory, _saveLoadInstancesWatcher, _persistentProgressService, _addressableAssetProvider);
             lootSpawner.SetLoot(monsterStaticData.MinLoot, monsterStaticData.MaxLoot);
         }
     }

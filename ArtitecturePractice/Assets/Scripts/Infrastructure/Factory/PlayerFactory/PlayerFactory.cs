@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data;
 using Data.Assets;
 using UnityEngine;
@@ -10,22 +11,18 @@ namespace Infrastructure.Factory.PlayerFactory
 {
     public class PlayerFactory : IPlayerFactory
     {
-        public PlayerFactory(IAssetsProvider assetsProvider, ISaveLoadInstancesWatcher saveLoadInstancesWatcher, IStaticDataService staticDataService)
+        public PlayerFactory(ISaveLoadInstancesWatcher saveLoadInstancesWatcher)
         {
-            _assetsProvider = assetsProvider;
             _saveLoadInstancesWatcher = saveLoadInstancesWatcher;
-            _staticDataService = staticDataService;
         }
 
         public GameObject PlayerInstance { get; private set; }
         
-        private readonly IAssetsProvider _assetsProvider;
         private readonly ISaveLoadInstancesWatcher _saveLoadInstancesWatcher;
-        private readonly IStaticDataService _staticDataService;
 
-        public GameObject CreatePlayer(Vector3 position)
+        public GameObject CreatePlayer(GameObject prefab, Vector3 position)
         {
-            var instance = InstantiateRegistered(AssetsConstants.PLAYER_PREFAB_PATH, position);
+            var instance = InstantiateRegistered(prefab, position);
 
             PlayerInstance = instance;
 
@@ -37,10 +34,8 @@ namespace Infrastructure.Factory.PlayerFactory
             Object.Destroy(PlayerInstance);
         }
 
-        private GameObject InstantiateRegistered(string path, Vector3 position)
+        private GameObject InstantiateRegistered(GameObject prefab, Vector3 position)
         {
-            var prefab = _assetsProvider.GetAssetByPath<GameObject>(path);
-
             var instance = Object.Instantiate(prefab, position, Quaternion.identity);
                 
             _saveLoadInstancesWatcher.RegisterProgress(instance);

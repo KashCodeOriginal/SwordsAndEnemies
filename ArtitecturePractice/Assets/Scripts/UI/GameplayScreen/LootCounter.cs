@@ -8,17 +8,14 @@ namespace UI.GameplayScreen
     {
         [SerializeField] private TextMeshProUGUI _countText;
         private WorldData _worldData;
-        
-        private void Start()
-        {
-            OnLootAmountChanged();
-        }
 
         public void Construct(WorldData worldData)
         {
             _worldData = worldData;
             
             _worldData.LootData.IsAmountChanged += OnLootAmountChanged;
+            
+            OnLootAmountChanged();
         }
 
         private void OnLootAmountChanged()

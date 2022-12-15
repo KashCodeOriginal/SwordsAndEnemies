@@ -3,6 +3,7 @@ using UnityEngine;
 using Units.Enemy.Logic;
 using Watchers.SaveLoadWatchers;
 using Infrastructure.Factory.EnvironmentFactory;
+using Services.AssetsProvider;
 using Services.PersistentProgress;
 
 namespace Spawners.Loot
@@ -11,11 +12,13 @@ namespace Spawners.Loot
     {
         public void Construct(IEnvironmentFactory environmentFactory, 
             ISaveLoadInstancesWatcher saveLoadInstancesWatcher, 
-            IPersistentProgressService persistentProgressService)
+            IPersistentProgressService persistentProgressService,
+            IAddressableAssetProvider addressableAssetProvider)
         {
             _environmentFactory = environmentFactory;
             _saveLoadInstancesWatcher = saveLoadInstancesWatcher;
             _persistentProgressService = persistentProgressService;
+            _addressableAssetProvider = addressableAssetProvider;
         }
 
         [SerializeField] private EnemyDeath _enemyDeath;
@@ -26,6 +29,8 @@ namespace Spawners.Loot
 
         private IPersistentProgressService _persistentProgressService;
 
+        private IAddressableAssetProvider _addressableAssetProvider;
+        
         private int _lootMin;
 
         private int _lootMax;
@@ -35,9 +40,11 @@ namespace Spawners.Loot
             _enemyDeath.IsEnemyDied += SpawnLoot;
         }
 
-        private void SpawnLoot()
+        private async void SpawnLoot()
         {
-            var instance = _environmentFactory.CreateInstance(AssetsConstants.LOOT);
+            var lootPrefab = await _addressableAssetProvider.GetAsset<GameObject>(AssetsAddressablesConstants.LOOT);
+            
+            var instance = _environmentFactory.CreateInstance(lootPrefab);
             
             instance.transform.position = transform.position;
             

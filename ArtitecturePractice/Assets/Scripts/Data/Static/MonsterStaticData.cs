@@ -1,7 +1,8 @@
 ﻿ using Spawners.Enemy;
  using UnityEngine;
+ using UnityEngine.AddressableAssets;
 
-namespace Data.Static
+ namespace Data.Static
 {
     [CreateAssetMenu(fileName = "MonsterData", menuName = "StaticData/Monster")]
     public class MonsterStaticData : ScriptableObject
@@ -28,6 +29,6 @@ namespace Data.Static
         [field: SerializeField] public int MinLoot { get; private set; }
         [field: SerializeField] public int MaxLoot { get; private set; }
         
-        [field: SerializeField] public GameObject Prefab { get; private set; }
+        [field: SerializeField] public AssetReferenceGameObject PrefabReference { get; private set; }
     }
 }

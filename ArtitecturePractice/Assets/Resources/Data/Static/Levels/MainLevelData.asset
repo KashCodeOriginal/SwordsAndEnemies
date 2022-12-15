@@ -17,15 +17,15 @@ MonoBehaviour:
   - ID: MainLevel_43886114-9423-471a-b1d5-878a533904f2
     MonsterTypeID: 0
     Position: {x: -39.5, y: 0, z: -32.3}
-  - ID: MainLevel_44c51065-2500-4efe-a8ef-20b070ac315e
-    MonsterTypeID: 1
-    Position: {x: -31.75, y: 0, z: 9.5}
   - ID: MainLevel_2174df58-bfa7-41a1-b905-7882eca35481
     MonsterTypeID: 0
     Position: {x: -22.75, y: 0, z: -22.75}
   - ID: MainLevel_ab2de6a9-5d96-4693-9051-d45f911a3a5d
     MonsterTypeID: 0
     Position: {x: 23.4, y: 0, z: -4.5}
+  - ID: MainLevel_44c51065-2500-4efe-a8ef-20b070ac315e
+    MonsterTypeID: 1
+    Position: {x: -31.75, y: 0, z: 9.5}
   - ID: MainLevel_ce2522dd-cd68-46db-a4f0-32e843a4b458
     MonsterTypeID: 0
     Position: {x: -10.25, y: 0, z: 5.25}

@@ -49,19 +49,19 @@ namespace Infrastructure.StateMachine
         {
             _services.RegisterSingle<IInputService>(InputService());
             _services.RegisterSingle<ISaveLoadInstancesWatcher>(new SaveLoadInstancesWatcher());
-            _services.RegisterSingle<IAssetsProvider>(new AssetsProvider());
+            RegisterAddressableAssetProvider();
             _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
             _services.RegisterSingle<ISaveLoadService>
             (new SaveLoadService(GetAsset<ISaveLoadInstancesWatcher>(),
                 GetAsset<IPersistentProgressService>()));
             _services.RegisterSingle<IPlayerFactory>
-            (new PlayerFactory(GetAsset<IAssetsProvider>(),
-                GetAsset<ISaveLoadInstancesWatcher>(), GetAsset<IStaticDataService>()));
+            (new PlayerFactory(
+                GetAsset<ISaveLoadInstancesWatcher>()));
 
             RegisterStaticDataService();
             RegisterAdsService();
 
-            _services.RegisterSingle<IUIFactory>(new UIFactory(GetAsset<IAssetsProvider>(), 
+            _services.RegisterSingle<IUIFactory>(new UIFactory(GetAsset<IAddressableAssetProvider>(), 
                 GetAsset<IStaticDataService>(), 
                 GetAsset<IPersistentProgressService>(), GetAsset<IAdsService>()));
 
@@ -69,7 +69,7 @@ namespace Infrastructure.StateMachine
 
 
             _services.RegisterSingle<IEnvironmentFactory>
-                (new EnvironmentFactory(GetAsset<IAssetsProvider>()));
+                (new EnvironmentFactory());
 
             _services.RegisterSingle<IEnemyFactory>
             (new EnemyFactory
@@ -77,14 +77,24 @@ namespace Infrastructure.StateMachine
                 GetAsset<IPlayerFactory>(), 
                 GetAsset<IEnvironmentFactory>(), 
                 GetAsset<ISaveLoadInstancesWatcher>(),
-                GetAsset<IPersistentProgressService>()));
+                GetAsset<IPersistentProgressService>(),
+                GetAsset<IAddressableAssetProvider>()));
 
             _services.RegisterSingle<ISpawnerFactory>
-                (new SpawnerFactory(GetAsset<IAssetsProvider>(), 
+                (new SpawnerFactory(GetAsset<IAddressableAssetProvider>(), 
                     GetAsset<ISaveLoadInstancesWatcher>(),
                     GetAsset<IEnemyFactory>()));
             
             _services.RegisterSingle<IGameStateMachine>(_gameStateMachine);
+        }
+
+        private void RegisterAddressableAssetProvider()
+        {
+            var addressableAssetProvider = new AddressableAssetProvider();
+            addressableAssetProvider.CleanUp();
+            addressableAssetProvider.Initialize();
+
+            _services.RegisterSingle<IAddressableAssetProvider>(addressableAssetProvider);
         }
 
         private void RegisterAdsService()

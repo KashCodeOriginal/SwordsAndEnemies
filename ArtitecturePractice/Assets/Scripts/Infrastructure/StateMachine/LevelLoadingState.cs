@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 using CameraControl;
 using Data.Assets;
-using Infrastructure.Factory.EnemyFactory;
 using UI.LoadingScreen;
 using Services.SceneLoader;
 using Infrastructure.Factory.PlayerFactory;
 using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.SpawnersFactory;
+using Services.AssetsProvider;
 using Services.Input;
 using Services.PersistentProgress;
 using Services.StaticData;
@@ -25,7 +26,8 @@ namespace Infrastructure.StateMachine
         public LevelLoadingState(GameStateMachine gameStateMachine, SceneLoader sceneLoader,
             LoadingScreen loadingScreen, IPlayerFactory playerFactory, IEnvironmentFactory environmentFactory,
             ISaveLoadInstancesWatcher saveLoadInstancesWatcher, IPersistentProgressService persistentProgressService,
-            IInputService inputService, IStaticDataService staticDataService, ISpawnerFactory spawnerFactory, IWindowService windowService, IUIFactory uiFactory)
+            IInputService inputService, IStaticDataService staticDataService, ISpawnerFactory spawnerFactory,
+            IWindowService windowService, IUIFactory uiFactory, IAddressableAssetProvider addressableAssetProvider)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
@@ -39,6 +41,7 @@ namespace Infrastructure.StateMachine
             _spawnerFactory = spawnerFactory;
             _windowService = windowService;
             _uiFactory = uiFactory;
+            _addressableAssetProvider = addressableAssetProvider;
         }
 
 
@@ -54,6 +57,7 @@ namespace Infrastructure.StateMachine
         private readonly ISpawnerFactory _spawnerFactory;
         private readonly IWindowService _windowService;
         private readonly IUIFactory _uiFactory;
+        private readonly IAddressableAssetProvider _addressableAssetProvider;
 
         public void Enter(string sceneName)
         {
@@ -67,9 +71,9 @@ namespace Infrastructure.StateMachine
             _loadingScreen.Hide();
         }
 
-        private void OnSceneLoaded()
+        private async void OnSceneLoaded()
         {
-            InitGameWorld();
+            await InitGameWorld();
 
             InformProgressReaders();
             
@@ -84,18 +88,24 @@ namespace Infrastructure.StateMachine
             }
         }
 
-        private void InitGameWorld()
+        private async Task InitGameWorld()
         {
             var levelData = GetLevelStaticData();
 
             InitUIRoot();
             
-            InitSpawners(levelData);
-            
-            var hero = _playerFactory.CreatePlayer(levelData.InitialPlayerPosition);
+            await InitSpawners(levelData);
 
-            var gameplayScreen = _environmentFactory.CreateInstance(AssetsConstants.GAMEPLAY_SCREEN_PREFAB_PATH);
-            var camera = _environmentFactory.CreateInstance(AssetsConstants.CAMERA_PREFAB_PATH);
+            var heroPrefab = await 
+                _addressableAssetProvider.GetAsset<GameObject>(AssetsAddressablesConstants.PLAYER_PREFAB_PATH);
+            var gameplayScreenPrefab = await
+                _addressableAssetProvider.GetAsset<GameObject>(AssetsAddressablesConstants.GAMEPLAY_SCREEN_PREFAB_PATH);
+            var cameraPrefab = await
+                _addressableAssetProvider.GetAsset<GameObject>(AssetsAddressablesConstants.CAMERA_PREFAB_PATH);
+
+            var hero = _playerFactory.CreatePlayer(heroPrefab, levelData.InitialPlayerPosition);
+            var gameplayScreen = _environmentFactory.CreateInstance(gameplayScreenPrefab);
+            var camera = _environmentFactory.CreateInstance(cameraPrefab);
 
             CameraFollow(camera, hero);
             SetUp(hero, camera, gameplayScreen);
@@ -113,12 +123,14 @@ namespace Infrastructure.StateMachine
             _uiFactory.CreateUIRoot();
         }
 
-        private void InitSpawners(LevelStaticData levelData)
+        private Task InitSpawners(LevelStaticData levelData)
         {
             foreach (var data in levelData.EnemySpawners)
             {
                 _spawnerFactory.CreateSpawner(data.Position, data.ID, data.MonsterTypeID);
             }
+            
+            return Task.CompletedTask;
         }
 
         private void SetUp(GameObject hero, GameObject cam, GameObject gameplayScreen)

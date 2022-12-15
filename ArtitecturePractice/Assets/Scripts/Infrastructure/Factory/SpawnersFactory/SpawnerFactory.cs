@@ -10,20 +10,20 @@ namespace Infrastructure.Factory.SpawnersFactory
 {
     public class SpawnerFactory : ISpawnerFactory
     {
-        public SpawnerFactory(IAssetsProvider assetsProvider, ISaveLoadInstancesWatcher saveLoadInstancesWatcher, IEnemyFactory enemyFactory)
+        public SpawnerFactory(IAddressableAssetProvider assetsProvider, ISaveLoadInstancesWatcher saveLoadInstancesWatcher, IEnemyFactory enemyFactory)
         {
             _assetsProvider = assetsProvider;
             _saveLoadInstancesWatcher = saveLoadInstancesWatcher;
             _enemyFactory = enemyFactory;
         }
 
-        private readonly IAssetsProvider _assetsProvider;
+        private readonly IAddressableAssetProvider _assetsProvider;
         private readonly ISaveLoadInstancesWatcher _saveLoadInstancesWatcher;
         private readonly IEnemyFactory _enemyFactory;
 
-        public void CreateSpawner(Vector3 dataPosition, string spawnerID, MonsterTypeId dataMonsterTypeID)
+        public async void CreateSpawner(Vector3 dataPosition, string spawnerID, MonsterTypeId dataMonsterTypeID)
         {
-            var prefab = _assetsProvider.GetAssetByPath<GameObject>(AssetsConstants.SPAWNER);
+            var prefab = await _assetsProvider.GetAsset<GameObject>(AssetsAddressablesConstants.SPAWNER);
             
             var instance = Object.Instantiate(prefab, dataPosition, Quaternion.identity);
             

@@ -1,9 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Services.AssetsProvider
 {
-    public interface IAssetsProvider : IService
+    public interface IAddressableAssetProvider : IService
     {
-        public T GetAssetByPath<T>(string path) where T : Object;
+        public void Initialize();
+        public Task<T> GetAsset<T>(string address) where T : Object;
+        public Task<T> GetAsset<T>(AssetReference assetReference) where T : Object;
+        public void CleanUp();
     }
 }

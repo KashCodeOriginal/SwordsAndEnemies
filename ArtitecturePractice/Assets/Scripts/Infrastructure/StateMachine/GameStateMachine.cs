@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Infrastructure.Factory.EnvironmentFactory;
 using Infrastructure.Factory.PlayerFactory;
 using Infrastructure.Factory.SpawnersFactory;
+using Services.AssetsProvider;
 using Services.Input;
 using Services.PersistentProgress;
 using Services.SaveLoad;
@@ -40,7 +41,8 @@ namespace Infrastructure.StateMachine
                     services.Single<IStaticDataService>(),
                     services.Single<ISpawnerFactory>(),
                     services.Single<IWindowService>(),
-                    services.Single<IUIFactory>())
+                    services.Single<IUIFactory>(),
+                    services.Single<IAddressableAssetProvider>())
             }; 
         }
         

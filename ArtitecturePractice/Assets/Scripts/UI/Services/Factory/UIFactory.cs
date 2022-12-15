@@ -11,7 +11,7 @@ namespace UI.Services.Factory
 {
     public class UIFactory : IUIFactory
     {
-        public UIFactory(IAssetsProvider assetsProvider, IStaticDataService staticData, IPersistentProgressService persistentProgressService, IAdsService adsService)
+        public UIFactory(IAddressableAssetProvider assetsProvider, IStaticDataService staticData, IPersistentProgressService persistentProgressService, IAdsService adsService)
         {
             _assetsProvider = assetsProvider;
             _staticData = staticData;
@@ -19,15 +19,15 @@ namespace UI.Services.Factory
             _adsService = adsService;
         }
 
-        private readonly IAssetsProvider _assetsProvider;
+        private readonly IAddressableAssetProvider _assetsProvider;
         private readonly IStaticDataService _staticData;
         private readonly IPersistentProgressService _persistentProgressService;
         private readonly IAdsService _adsService;
         private Transform _uiRootTransform;
 
-        public void CreateUIRoot()
+        public async void CreateUIRoot()
         {
-            var uiRootPrefab = _assetsProvider.GetAssetByPath<GameObject>(AssetsConstants.UI_ROOT);
+            var uiRootPrefab = await _assetsProvider.GetAsset<GameObject>(AssetsAddressablesConstants.UI_ROOT);
             var uiRootInstance = Object.Instantiate(uiRootPrefab);
             _uiRootTransform = uiRootInstance.transform;
         }

@@ -1,18 +1,10 @@
 ﻿using System.Collections.Generic;
-using Services.AssetsProvider;
 using UnityEngine;
 
 namespace Infrastructure.Factory.EnvironmentFactory
 {
     public class EnvironmentFactory : IEnvironmentFactory
     {
-        public EnvironmentFactory(IAssetsProvider assetsProvider)
-        {
-            _assetsProvider = assetsProvider;
-        }
-
-        private readonly IAssetsProvider _assetsProvider;
-
         private List<GameObject> _instances = new List<GameObject>();
 
         public IReadOnlyList<GameObject> Instances
@@ -20,10 +12,8 @@ namespace Infrastructure.Factory.EnvironmentFactory
             get => _instances;
         }
 
-        public GameObject CreateInstance(string path)
+        public GameObject CreateInstance(GameObject prefab)
         {
-            var prefab = _assetsProvider.GetAssetByPath<GameObject>(path);
-            
             var instance = Object.Instantiate(prefab);
             
             _instances.Add(instance);

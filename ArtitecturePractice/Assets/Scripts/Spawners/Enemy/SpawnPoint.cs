@@ -49,9 +49,9 @@ namespace Spawners.Enemy
             }
         }
 
-        private void Spawn()
+        private async void Spawn()
         {
-            var monster = _enemyFactory.CreateInstance(_monsterTypeId, transform);
+            var monster = await _enemyFactory.CreateInstance(_monsterTypeId, transform);
             
             if (monster.TryGetComponent(out EnemyDeath enemyDeath))
             {

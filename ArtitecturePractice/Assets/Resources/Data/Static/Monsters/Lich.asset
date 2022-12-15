@@ -23,4 +23,8 @@ MonoBehaviour:
   <MovementSpeed>k__BackingField: 0
   <MinLoot>k__BackingField: 1
   <MaxLoot>k__BackingField: 7
-  <Prefab>k__BackingField: {fileID: 6798299455511659827, guid: 497ea9a27b7cc7d46a74460b71f7bf3b, type: 3}
+  <PrefabReference>k__BackingField:
+    m_AssetGUID: 497ea9a27b7cc7d46a74460b71f7bf3b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
