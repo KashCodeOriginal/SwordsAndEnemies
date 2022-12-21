@@ -12,12 +12,14 @@ namespace Data.Player
             HeroState = new HeroState();
             HeroStats = new HeroStats();
             KillData = new KillData();
+            PurchaseData = new PurchaseData();
         }
 
         public WorldData WorldData;
         public HeroState HeroState;
         public HeroStats HeroStats;
         public KillData KillData;
+        public PurchaseData PurchaseData;
     }
 
     [Serializable]

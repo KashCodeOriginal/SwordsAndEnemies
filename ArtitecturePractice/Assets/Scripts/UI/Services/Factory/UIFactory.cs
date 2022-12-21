@@ -1,6 +1,7 @@
 ﻿using Data.Assets;
 using Services.Ads;
 using Services.AssetsProvider;
+using Services.IAP.Service;
 using Services.PersistentProgress;
 using Services.StaticData;
 using UI.Services.WindowsService;
@@ -11,18 +12,24 @@ namespace UI.Services.Factory
 {
     public class UIFactory : IUIFactory
     {
-        public UIFactory(IAddressableAssetProvider assetsProvider, IStaticDataService staticData, IPersistentProgressService persistentProgressService, IAdsService adsService)
+        public UIFactory(IAddressableAssetProvider assetsProvider, 
+            IStaticDataService staticData, 
+            IPersistentProgressService persistentProgressService, 
+            IAdsService adsService, 
+            IIAPService iapService)
         {
             _assetsProvider = assetsProvider;
             _staticData = staticData;
             _persistentProgressService = persistentProgressService;
             _adsService = adsService;
+            _iapService = iapService;
         }
 
         private readonly IAddressableAssetProvider _assetsProvider;
         private readonly IStaticDataService _staticData;
         private readonly IPersistentProgressService _persistentProgressService;
         private readonly IAdsService _adsService;
+        private readonly IIAPService _iapService;
         private Transform _uiRootTransform;
 
         public async void CreateUIRoot()
@@ -40,7 +47,7 @@ namespace UI.Services.Factory
             
             if (windowInstance != null && windowInstance.TryGetComponent(out ShopWindow baseWindow))
             {
-                baseWindow.Construct(_adsService, _persistentProgressService);
+                baseWindow.Construct(_adsService, _iapService, _persistentProgressService, _assetsProvider);
             }
 
         }

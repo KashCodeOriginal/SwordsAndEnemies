@@ -110,7 +110,7 @@ namespace Infrastructure.StateMachine
             CameraFollow(camera, hero);
             SetUp(hero, camera, gameplayScreen);
         }
-
+        
         private LevelStaticData GetLevelStaticData()
         {
             var sceneKey = SceneManager.GetActiveScene().name;

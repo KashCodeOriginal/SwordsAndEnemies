@@ -10,5 +10,6 @@ namespace Data.Assets
         public const string GAMEPLAY_SCREEN_PREFAB_PATH = "GameplayScreen";
         public const string CAMERA_PREFAB_PATH = "MainCamera";
         public const string UI_ROOT = "UIRoot";
+        public const string SHOP_ITEM = "ShopItem";
     }
 }

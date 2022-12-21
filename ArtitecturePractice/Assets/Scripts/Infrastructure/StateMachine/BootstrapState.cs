@@ -5,6 +5,8 @@ using Infrastructure.Factory.SpawnersFactory;
 using Services;
 using Services.Ads;
 using Services.AssetsProvider;
+using Services.IAP.Provider;
+using Services.IAP.Service;
 using Services.Input;
 using Services.PersistentProgress;
 using Services.SaveLoad;
@@ -40,11 +42,6 @@ namespace Infrastructure.StateMachine
             _sceneLoader.LoadScene(SceneName, EnterLoadLevel);
         }
 
-        public void Exit()
-        {
-            
-        }
-
         private void RegisterServices()
         {
             _services.RegisterSingle<IInputService>(InputService());
@@ -60,10 +57,11 @@ namespace Infrastructure.StateMachine
 
             RegisterStaticDataService();
             RegisterAdsService();
+            RegisterIapsService(new IAPProvider(), _services.Single<IPersistentProgressService>());
 
             _services.RegisterSingle<IUIFactory>(new UIFactory(GetAsset<IAddressableAssetProvider>(), 
                 GetAsset<IStaticDataService>(), 
-                GetAsset<IPersistentProgressService>(), GetAsset<IAdsService>()));
+                GetAsset<IPersistentProgressService>(), GetAsset<IAdsService>(), GetAsset<IIAPService>()));
 
             _services.RegisterSingle<IWindowService>(new WindowService(GetAsset<IUIFactory>()));
 
@@ -81,11 +79,16 @@ namespace Infrastructure.StateMachine
                 GetAsset<IAddressableAssetProvider>()));
 
             _services.RegisterSingle<ISpawnerFactory>
-                (new SpawnerFactory(GetAsset<IAddressableAssetProvider>(), 
-                    GetAsset<ISaveLoadInstancesWatcher>(),
-                    GetAsset<IEnemyFactory>()));
-            
+            (new SpawnerFactory(GetAsset<IAddressableAssetProvider>(), 
+                GetAsset<ISaveLoadInstancesWatcher>(),
+                GetAsset<IEnemyFactory>()));
+
             _services.RegisterSingle<IGameStateMachine>(_gameStateMachine);
+        }
+
+        public void Exit()
+        {
+            
         }
 
         private void RegisterAddressableAssetProvider()
@@ -102,6 +105,12 @@ namespace Infrastructure.StateMachine
             var adsService = new AdsService();
             adsService.Initialize();
             _services.RegisterSingle<IAdsService>(adsService);
+        }
+        private void RegisterIapsService(IAPProvider iapProvider, IPersistentProgressService progressService)
+        {
+            var iapService = new IAPService(iapProvider, progressService);
+            iapService.Initialize();
+            _services.RegisterSingle<IIAPService>(iapService);
         }
 
         private void EnterLoadLevel()
