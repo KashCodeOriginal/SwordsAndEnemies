@@ -9,10 +9,10 @@ namespace Units.Hero
     [SerializeField] private CharacterController _characterController;
     [SerializeField] public Animator _animator;
 
-    private static readonly int MoveHash = Animator.StringToHash("Walking");
-    private static readonly int AttackHash = Animator.StringToHash("AttackNormal");
-    private static readonly int HitHash = Animator.StringToHash("Hit");
-    private static readonly int DieHash = Animator.StringToHash("Die");
+    private readonly int _moveHash = Animator.StringToHash("Walking");
+    private readonly int _attackHash = Animator.StringToHash("AttackNormal");
+    private readonly int _hitHash = Animator.StringToHash("Hit");
+    private readonly int _dieHash = Animator.StringToHash("Die");
 
     private readonly int _idleStateHash = Animator.StringToHash("Idle");
     private readonly int _idleStateFullHash = Animator.StringToHash("Base Layer.Idle");
@@ -28,22 +28,22 @@ namespace Units.Hero
 
     private void Update()
     {
-      _animator.SetFloat(MoveHash, _characterController.velocity.magnitude, 0.1f, Time.deltaTime);
+      _animator.SetFloat(_moveHash, _characterController.velocity.magnitude, 0.1f, Time.deltaTime);
     }
 
     public void PlayHit()
     {
-      _animator.SetTrigger(HitHash);
+      _animator.SetTrigger(_hitHash);
     }
 
     public void PlayAttack()
     {
-      _animator.SetTrigger(AttackHash);
+      _animator.SetTrigger(_attackHash);
     }
 
     public void PlayDeath()
     {
-      _animator.SetTrigger(DieHash);
+      _animator.SetTrigger(_dieHash);
     }
 
     public void ResetToIdle()

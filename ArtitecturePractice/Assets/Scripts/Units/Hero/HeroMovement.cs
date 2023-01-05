@@ -45,11 +45,6 @@ namespace Units.Hero
             _camera = cam;
         }
 
-        public void StopMovement()
-        {
-            _canMove = false;
-        }
-
         public void UpdateProgress(PlayerProgress playerProgress)
         {
             playerProgress.WorldData.PositionOnLevel = new PositionOnLevel(GetCurrentLevel(),

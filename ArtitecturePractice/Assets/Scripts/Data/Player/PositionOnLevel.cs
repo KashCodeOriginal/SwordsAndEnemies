@@ -10,7 +10,7 @@ namespace Data.Player
             LevelName = levelName;
             Position = position;
         }
-
+    
         public PositionOnLevel(string sceneName)
         {
             LevelName = sceneName;
