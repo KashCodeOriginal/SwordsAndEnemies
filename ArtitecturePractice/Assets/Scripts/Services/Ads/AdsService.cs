@@ -4,7 +4,7 @@ using UnityEngine.Advertisements;
 
 namespace Services.Ads
 {
-    public class AdsService : IAdsService, IUnityAdsShowListener, IUnityAdsLoadListener, IUnityAdsInitializationListener
+    public class AdsService : IAdsService/*, IUnityAdsShowListener, IUnityAdsLoadListener, IUnityAdsInitializationListener*/
     {
         public event Action RewardedVideoReady;
         private event Action _onVideoFinished;
@@ -26,18 +26,18 @@ namespace Services.Ads
 
         public void Initialize()
         {
-            _gameID = Application.platform == RuntimePlatform.Android ? ANDROID_GAME_ID : IOS_GAME_ID;
+            /*_gameID = Application.platform == RuntimePlatform.Android ? ANDROID_GAME_ID : IOS_GAME_ID;
         
-            Advertisement.Initialize(_gameID, _testMode, this);
+            Advertisement.Initialize(_gameID, _testMode, this);*/
         }
 
         public void ShowRewardedVideo(Action onVideoFinished)
         {
-            Advertisement.Show(RewardedVideoID, this);
+            /*Advertisement.Show(RewardedVideoID, this);
             
             _isAdsReady = false;
             
-            _onVideoFinished = onVideoFinished;
+            _onVideoFinished = onVideoFinished;*/
         }
         
         public void OnInitializationComplete()
@@ -47,10 +47,10 @@ namespace Services.Ads
             Debug.Log("Unity ads successfully loaded");
         }
 
-        public void OnInitializationFailed(UnityAdsInitializationError error, string message)
+        /*public void OnInitializationFailed(UnityAdsInitializationError error, string message)
         {
             Debug.Log("Unity ads loading failed");
-        }
+        }*/
 
         public void OnUnityAdsAdLoaded(string placementId)
         {
@@ -60,10 +60,10 @@ namespace Services.Ads
             }
         }
 
-        public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
+        /*public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
         {
             Debug.Log("Unity ads failed to load");
-        }
+        }*/
 
         public void OnUnityAdsShowStart(string placementId)
         {
@@ -75,7 +75,7 @@ namespace Services.Ads
             Debug.Log("Unity ads clicked");
         }
 
-        public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
+        /*public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
         {
             Debug.Log("Unity ads completed");
 
@@ -94,11 +94,11 @@ namespace Services.Ads
             }
 
             _onVideoFinished = null;
-        }
+        }*/
 
-        public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
+        /*public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
         {
             Debug.Log("Unity ads show failed" + error + message);
-        }
+        }*/
     }
 }
